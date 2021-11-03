@@ -31,12 +31,13 @@ class QuotePriceCalculatorTest extends TestCase
 
         $arrivalDate = new \DateTime('2021-06-01'); // In the high season
         $nightsCount = 2;
+        $guestCount = 3;
 
         // Expectation: price per night will be got from a PriceList object
         $priceListFactory->method('create')->willReturn($priceList);
 
         // Action
-        $price = $SUT->calculate($arrivalDate, $nightsCount);
+        $price = $SUT->calculate($arrivalDate, $nightsCount, $guestCount);
 
         // Expectations: 80€ * 2 nights * 1 (no discount)
         $this->assertEquals(80 * 2, $price);

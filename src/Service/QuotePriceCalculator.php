@@ -12,7 +12,7 @@ class QuotePriceCalculator
         $this->priceListFactory = $priceListFactory;
     }
 
-    public function calculate(\DateTime $arrivalDate, int $nightsCount, $guestCount): float
+    public function calculate(\DateTime $arrivalDate, int $nightsCount, int $guestCount): float
     {
         if ($nightsCount <= 0) {
             throw new \Exception();

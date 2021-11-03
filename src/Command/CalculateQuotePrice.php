@@ -9,7 +9,7 @@ class CalculateQuotePrice
 
     public ?\DateTime $arrivalDate;
 
-    public $guestCount = null;
+    public ?int $guestCount = null;
 
     public ?int $nightsCount = null;
 
