@@ -24,6 +24,7 @@ class QuoteTest extends PantherTestCase
         $form->setValues([
             'calculate_quote_price_form[arrivalDate]' => '17/11/2021',
             'calculate_quote_price_form[nightsCount]' => '2',
+            'calculate_quote_price_form[guestCount]' => '3',
         ]);
         $client->submit($form);
 
