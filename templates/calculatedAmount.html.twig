@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'your_quote'|trans }}{% endblock %}
+
+{% block body %}
+  <div class="row">
+    <div class="col-12">
+      <h1>{{ 'your_quote'|trans }}</h1>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <strong>{{ 'arrival_date'|trans }}:</strong> {{ arrival_date|format_date }}
+        </li>
+        <li class="list-group-item">
+          <strong>{{ 'nights_count'|trans }}</strong>: {{ nights_count }}
+        </li>
+      </ul>
+    </div>
+    <div class="col-12 mt-3">
+      <h3 data-test="quote-amount">{{ 'total'|trans }}: {{ amount }}€</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col text-center">
+      <a class="btn btn-outline-primary" href="{{ url('index') }}">{{ 'back'|trans }}</a>
+    </div>
+  </div>
+{% endblock %}

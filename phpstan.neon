@@ -1,0 +1,10 @@
+parameters:
+    checkMissingTypehints: false # PHPCS already does that
+    checkMissingVarTagTypehint: false # PHPCS already does that
+    checkGenericClassInNonGenericObjectType: false # Override rule from level 6 still too strict to respect
+    checkMissingIterableValueType: false # Override rule from level 6 still too strict to respect
+    treatPhpDocTypesAsCertain: false
+    tmpDir: /tmp/phpstan # Used for storing result cache
+    ignoreErrors:
+        # We don't want to specify "void" return typehints for tests
+        - '#Method App\\Tests\\.+has no return typehint specified\.#'

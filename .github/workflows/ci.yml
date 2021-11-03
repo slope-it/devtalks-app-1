@@ -1,0 +1,131 @@
+name: CI
+
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  PHP_VERSION: 7.4
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v2
+      - name: "Install PHP with extensions"
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: "none"
+          extensions: intl, xml, curl, zip, mbstring
+          php-version: ${{ env.PHP_VERSION }}
+          tools: composer:v2
+      - name: "Get Composer cache directory"
+        id: composer_cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: "Cache Composer dependencies"
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer_cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+      - name: "Install Composer dependencies"
+        run: composer install --no-interaction --no-progress
+      - name: "Read .nvmrc"
+        run: echo ::set-output name=NVMRC::$(cat .nvmrc)
+        id: read_nvm
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '${{ steps.read_nvm.outputs.NVMRC }}'
+      - name: "Cache NPM dependencies"
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+      - name: "Install NPM dependencies"
+        run: npm install
+      - name: "Generate bundle"
+        run: npm run dev
+
+  lint:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v2
+      - name: "Install PHP with extensions"
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: "none"
+          php-version: ${{ env.PHP_VERSION }}
+          tools: composer:v2
+      - name: "Get Composer cache directory"
+        id: composer_cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: "Cache Composer dependencies"
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer_cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+      - name: "Install Composer dependencies"
+        run: composer install --no-interaction --no-progress
+      - name: "Run PHPCS"
+        run: php vendor/bin/phpcs
+      - name: "Run PHPStan"
+        run: php vendor/bin/phpstan analyse -l 6 -c phpstan.neon src tests
+
+  tests:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v2
+      - name: "Install PHP with extensions"
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: "none"
+          extensions: intl, xml, curl, zip, mbstring
+          php-version: ${{ env.PHP_VERSION }}
+          tools: composer:v2
+      - name: "Get Composer cache directory"
+        id: composer_cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: "Cache Composer dependencies"
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer_cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+      - name: "Install Composer dependencies"
+        run: composer install --no-interaction --no-progress
+      - name: "Read .nvmrc"
+        run: echo ::set-output name=NVMRC::$(cat .nvmrc)
+        id: read_nvm
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '${{ steps.read_nvm.outputs.NVMRC }}'
+      - name: "Cache NPM dependencies"
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+      - name: "Install NPM dependencies"
+        run: npm install
+      - name: "Generate bundle"
+        run: npm run dev
+      - name: "Unit tests"
+        run: php vendor/bin/phpunit --testsuite Unit
+      - name: "Integration tests"
+        run: php vendor/bin/phpunit --testsuite Integration
+      - name: "Functional tests"
+        run: xvfb-run --auto-servernum php vendor/bin/phpunit --testsuite Functional

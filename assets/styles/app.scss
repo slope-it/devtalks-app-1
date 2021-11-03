@@ -1,0 +1,22 @@
+@import "bootstrap";
+
+.background-color {
+  --bs-bg-opacity: 1;
+  background-color: #232e3f;
+}
+
+.slope-logo {
+  width: 90px;
+  height: 40px;
+  fill: #fff;
+}
+
+body {
+  min-height: 100vh;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}

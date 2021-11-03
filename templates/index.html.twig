@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'quote_request'|trans }}{% endblock %}
+
+{% block body %}
+  {{ form_start(form) }}
+
+  <div class="row">
+    <div class="col-12 col-md-6">
+      {{ form_row(form.arrivalDate) }}
+    </div>
+    <div class="col-12 col-md-6">
+      {{ form_row(form.nightsCount) }}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col text-center">
+      {{ form_row(form.submit) }}
+    </div>
+  </div>
+
+  {{ form_end(form) }}
+{% endblock %}
