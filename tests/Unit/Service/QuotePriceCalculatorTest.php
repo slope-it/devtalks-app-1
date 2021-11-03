@@ -39,7 +39,7 @@ class QuotePriceCalculatorTest extends TestCase
         // Action
         $price = $SUT->calculate($arrivalDate, $nightsCount, $guestCount);
 
-        // Expectations: 80€ * 2 nights * 1 (no discount)
-        $this->assertEquals(80 * 2, $price);
+        // Expectations: 80€ * 2 nights * 3 guests * 1 (no discount)
+        $this->assertEquals(80 * 2 * 3, $price);
     }
 }
