@@ -18,6 +18,10 @@ class CalculateQuotePriceHandler implements MessageHandlerInterface
 
     public function __invoke(CalculateQuotePrice $command): void
     {
-        $command->amount = $this->priceCalculator->calculate($command->arrivalDate, $command->nightsCount);
+        $command->amount = $this->priceCalculator->calculate(
+            $command->arrivalDate,
+            $command->nightsCount,
+            $command->guestCount
+        );
     }
 }

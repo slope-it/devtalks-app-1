@@ -37,6 +37,7 @@ class QuotesController extends AbstractController
                     'amount' => $command->amount,
                     'nights_count' => $command->nightsCount,
                     'arrival_date' => $command->arrivalDate,
+                    'guest_count' => $command->guestCount,
                 ]
             );
         }

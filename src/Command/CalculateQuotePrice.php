@@ -9,6 +9,8 @@ class CalculateQuotePrice
 
     public ?\DateTime $arrivalDate;
 
+    public $guestCount = null;
+
     public ?int $nightsCount = null;
 
     public function __construct()

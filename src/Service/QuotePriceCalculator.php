@@ -12,7 +12,7 @@ class QuotePriceCalculator
         $this->priceListFactory = $priceListFactory;
     }
 
-    public function calculate(\DateTime $arrivalDate, int $nightsCount): float
+    public function calculate(\DateTime $arrivalDate, int $nightsCount, $guestCount): float
     {
         if ($nightsCount <= 0) {
             throw new \Exception();
@@ -23,7 +23,7 @@ class QuotePriceCalculator
         $pricePerNight = $priceList->getPricePerNight($arrivalDate);
         $discountPercentage = $this->getLongStayDiscountPercentage($nightsCount);
 
-        return $pricePerNight * $nightsCount * (1 - $discountPercentage);
+        return $pricePerNight * $nightsCount * $guestCount * (1 - $discountPercentage);
     }
 
     private function getLongStayDiscountPercentage(int $nightsCount): float
