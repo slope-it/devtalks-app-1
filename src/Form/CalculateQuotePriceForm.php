@@ -31,6 +31,12 @@ class CalculateQuotePriceForm extends AbstractType
                 'label' => 'nights_count',
             ]
         )->add(
+            'guestCount',
+            IntegerType::class,
+            [
+                'label' => 'guest_count',
+            ]
+        )->add(
             'submit',
             SubmitType::class,
             [
